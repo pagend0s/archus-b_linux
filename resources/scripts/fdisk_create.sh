@@ -10,7 +10,7 @@ for j in ${usb_mount_1[@]} ;
 		usb_mount_test=$(udevadm info --query=all -n /dev/"$j" 2>/dev/null | grep "USB" )
 		if [[ -z "$usb_mount_test" ]] ;
 			then
-				echo $blob
+				:
 			else
 				usb_mount+=($j)
 			fi
@@ -30,7 +30,7 @@ if [[ -z "$usb_mount" ]]
 		    		echo    "##################################################################################"
 			done
 	fi
-to_umount="$usb_mount"
+ 
 for_awk="$usb_mount"
 usb_mount="/dev/$usb_mount"
 echo -e "I have found USB at: ${RED}${bold}$usb_mount${NC} .. is this the correct mountpoint for USB ?"
@@ -59,6 +59,26 @@ else
 	exit 1
 fi
 
+to_umount=$(findmnt -no SOURCE,TARGET | grep $usb_mount | awk '{print $1}')
+if [[ -z "$to_umount" ]];
+then
+	:
+else
+	echo -e ${YELLOW}"Partitions on $usb_mount are mounted. Umount in progress."${NC}
+	for i in ${to_umount[@]};
+	do	
+		echo -e ${YELLOW}"$i Umount in progress."${NC}
+		to_umount_point=$(findmnt -no TARGET -S $i )
+		if ! sudo umount -l "$to_umount_point";
+		then
+			echo -e ${RED}"Failed to umount $i. Try to umount manual and run script again"${NC}
+			exit 1
+		else
+			echo -e ${GREEN}"$i Umount successfull."${NC}
+		fi
+	done
+fi
+
 DEVICE="$usb_mount"
 SIZE_BYTES=$(sudo blockdev --getsize64 "$DEVICE")
 
@@ -78,8 +98,8 @@ root_partition="$usb_mount""2"
 echo -e ${CYAN}"creating GPT partition table on $usb_mount"${NC}
 if ! sudo parted -s $usb_mount mklabel gpt;
 then
-	to_umount=$(cat /proc/mounts | grep $to_umount | awk '{print $2}')
-	sudo umount -l $to_umount
+	echo -e ${RED}"Failed to create gpt $usb_mount."${NC}
+        exit 1
 fi
 sleep 2
 
@@ -148,9 +168,3 @@ sleep 2
 
 export root_partition
 export esp_partition
-
-
-
-
-
-
