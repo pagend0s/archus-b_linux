@@ -86,6 +86,7 @@ sed -i "s|$search4|$replace4|g" /etc/mkinitcpio.conf
 sed -i.bak '/\bswap\b/ s/^/#/' /etc/fstab
 
 cp -R /home/ramroot_1.1/usr/* /usr/
+chmod -R 777 ./home/ramroot_1.1/
 
 ./home/ramroot_1.1/ramroot -C
 if ! ./home/ramroot_1.1/ramroot -E;
@@ -94,14 +95,14 @@ then
         echo -e ${CYAN}"Another attempt"${NC}
         search5='HOOKS=()'
 	replace5='HOOKS=(base udev autodetect modconf keyboard block filesystems fsck)'
-
+	chmod -R 777 ./home/ramroot_1.1/
 	sed -i "s|$search4|$replace4|g" /etc/mkinitcpio.conf
+	./home/ramroot_1.1/ramroot -C
         ./home/ramroot_1.1/ramroot -E
 else
         echo -e ${GREEN}"RAMROOT IS ACTIVATED !"${NC}
 
 fi
-	
 
 pacman -Scc --noconfirm
 
@@ -123,15 +124,3 @@ if [[ "$choice" == "y" ||  "$choice" == "Y" ]];
 fi
 
 bash
-
-
-
-
-
-
-
-
-
-
-
-
