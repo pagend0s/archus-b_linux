@@ -236,20 +236,6 @@ run_hook() {
         done
     fi
 
-    # copy /etc/ramroot.z files:
-    if [ -d /zram_root/etc/ramroot.z ]; then
-        cp -a --remove-destination /zram_root/etc/ramroot.z/. /zram_root
-    fi
-    # copy /home/<user>/.ramroot.z files:
-    for dir_home in /zram_root/home/*; do
-    if [ -d "$dir_home/.ramroot.z" ]; then
-        cp -a --remove-destination "$dir_home/.ramroot.z/." "$dir_home"
-    fi; done
-    if [ "$flag_quiet" = true ]; then
-        printf "\\033[H\\033[2J\\033[0;30m\\033[?1c\n" > \
-            /zram_root/etc/issue
-    fi
-
     # unmount zram device:
     umount /zram_root
 
