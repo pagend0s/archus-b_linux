@@ -54,22 +54,44 @@ while [ "$error" -eq 1 ]; do
 		error=0
 	fi
 done
-
 if ! genfstab -U mnt/ >> mnt/etc/fstab;
 then
 	echo -e ${RED}"Failed to generate fstab !"${NC}
+	exit 1
 else
 	echo -e ${GREEN}"fstab is generetad successfully."${NC}
 	echo -e ${YELLOW}"Checking fstab file."${NC}
-	if findmnt --verify -F mnt/etc/fstab;
-	then
-		echo -e ${GREEN}"ALL ENTRYS LOOKING GOOD."${NC}
-	else
+	
+	output=$(findmnt --verify -F mnt/etc/fstab 2>&1);
+	
+	parse_errors=$( echo "$output" | grep -oP '\d+(?= parse errors)')
+	warnings=$( echo "$output" | grep -oP '\d+(?= warnings)')
+	errors=$( echo "$output" | grep -oP '\d+(?= errors)')
+	
+	echo -e ${YELLOW}"Parse errors: ${parse_errors:-0}"${NC}
+	echo -e ${YELLOW}"Warnings: ${warnings:-0}"${NC}
+	echo -e ${RED}"Errors: ${errors:-0}"${NC}
+	
+	if [[ "$parse_errors" -gt 0 ]]; then
+		echo -e ${YELLOW}"There are parse errors in fstab"${NC}
+		findmnt --verify -F mnt/etc/fstab
+		echo -e ${YELLOW}"HIT ENTER WHEN READY:"${NC}
+		read
+	elif [[ "$warnings" -gt 0 ]]; then
+		echo -e ${YELLOW}"There are warnings in fstab"${NC}
+		if echo $output | grep -iE "target specified more than once"; then
+			echo -e ${YELLOW}"Double ROOT entry detected. Correcting."${NC}
+			sed -i.bak '/\b0 2\b/ s/^/#/' /mnt/etc/fstab
+		fi
+	elif [[ "$errors" -gt 0 ]]; then
+		findmnt --verify -F mnt/etc/fstab
 		echo -e ${RED}"/mnt/etc/fstab VERIFICATION FAILED. PLEASE CHECK THE ABOVE ERRORS"${NC}
 		echo -e ${YELLOW}"HIT ENTER WHEN READY:"${NC}
 		read
-	fi
-	
+		exit 1
+	else
+		echo -e ${GREEN}"ALL ENTRYS LOOKING GOOD."${NC}
+	fi	
 fi
 
 cp home/pacman_retrying.sh /mnt/home/pacman_retrying.sh
