@@ -5,7 +5,15 @@ sleep 3
 unset $time_zone
 unset $country_code
 echo -e ${CYAN}"Downloading list world link list from  https://archlinux.org/download/"${NC}
-curl --retry 5 --retry-delay 2 --retry-max-time 30 https://archlinux.org/download/ -o "$script_dir/resources/Files/links.html"
+if curl --retry 5 --retry-delay 2 --retry-max-time 10 --fail -s https://archlinux.org/download/ -o "$script_dir/resources/Files/links.html"; then
+	echo -e ${GREEN}"World list donwloaded successfully"${NC}
+else
+	if ! wget --tries=5 --retry-connrefused --waitretry=5 --timeout=10 -O "$script_dir/resources/Files/links.html" https://archlinux.org/download/; then
+		echo -e ${RED}"World link list donwload Failed. Setting defaults to US"${NC}
+	else
+		echo -e ${GREEN}"World link list donwloaded successfully"${NC}
+	fi
+fi
 echo -e ${CYAN}"Setting locale: time zone, keyboard layout"${NC}
 sleep 1
 #CITY
