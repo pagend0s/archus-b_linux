@@ -45,12 +45,14 @@ sleep 2
 echo -e ${RED}${bold}
 read -p "Continue ? ALL DATA WILL BE LOST ON THIS USB: (y/n)?" choice
 echo -e ${NC} 
-case "$choice" in
-  y|Y ) echo "yes";;
-  n|N ) echo "no";;
-  * ) echo "invalid";;
-esac
-
+while true; do
+  read -p "Enter choice (y/n): " choice
+  case "$choice" in
+    y|Y ) echo "yes"; break;;
+    n|N ) echo "no"; break;;
+    * ) echo "invalid, please try again";;
+  esac
+done
 if [[ "$choice" == "n" ||  "$choice" == "N" ]]; then
 	exit 1
 elif [[ "$choice" == "y" ||  "$choice" == "yes" ||  "$choice" == "Y" ||  "$choice" == "YES" ]]; then 
