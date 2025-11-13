@@ -9,10 +9,10 @@ else
 	exit 1
 fi	
 sleep 1
+sudo apt update
 if ! command -v parted &> /dev/null;
 then
 	echo -e  ${YELLOW}"parted is not installed. Installing.."${NC}
-	sudo apt update
 	sudo apt install -y parted
 else
 	echo -e  ${CYAN}"parted is already installed"${NC}
@@ -21,7 +21,6 @@ sleep 1
 if ! command -v mkfs.fat &> /dev/null;
 then
 	echo -e  ${YELLOW}"mkfs.fat is not installed. Installing.."${NC}
-	sudo apt update
 	sudo apt install -y dosfstools
 else
 	echo -e  ${CYAN}"mkfs.fat is already installed"${NC}
@@ -31,7 +30,6 @@ fi
 if ! command -v fatlabel &> /dev/null;
 then
 	echo -e  ${YELLOW}"fatlabel is not installed. Installing.."${NC}
-	sudo apt update
 	sudo apt install -y fatlabel
 else
 	echo -e  ${CYAN}"fatlabel is already installed"${NC}
@@ -41,7 +39,6 @@ sleep 1
 if ! command -v e2label &> /dev/null;
 then
 	echo -e  ${YELLOW}"e2label is not installed. Installing.."${NC}
-	sudo apt update
 	sudo apt install -y e2label
 else
 	echo -e  ${CYAN}"e2label is already installed"${NC}
@@ -51,7 +48,6 @@ sleep 1
 if ! command -v curl &> /dev/null;
 then
 	echo -e  ${YELLOW}"curl is not installed. Installing.."${NC}
-	sudo apt update
 	sudo apt install -y curl
 else
 	echo -e  ${CYAN}"curl is already installed"${NC}
@@ -71,7 +67,6 @@ sleep 1
 if ! command -v gpg &> /dev/null;
 then
 	echo -e  ${YELLOW}"gpg is not installed. Installing.."${NC}
-	sudo apt update
 	sudo apt install -y gnupg
 else
 	echo -e  ${CYAN}"gpg is already installed"${NC}
@@ -80,7 +75,6 @@ sleep 1
 if ! command -v zstd &> /dev/null;
 then
 	echo -e  ${YELLOW}"zstd is not installed. Installing.."${NC}
-	sudo apt update
 	sudo apt install -y zstd
 else
 	echo -e  ${CYAN}"zstd is already installed"${NC}
