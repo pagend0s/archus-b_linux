@@ -4,6 +4,7 @@ echo -e ${CYAN}"Now entering section where: help scripts are copied to extracted
 sleep 3
 
 sed -i '/## '$country_name'/,/## /{/https/s/#//g; /## /!p  }' "$script_dir/resources/Files/arch_chroot/root.x86_64/etc/pacman.d/mirrorlist" ##CHANGE COUNTRY !!!
+cp "$script_dir/resources/scripts/replace_hooks.sh" "$script_dir/resources/Files/arch_chroot/root.x86_64/home/"
 cp "$script_dir/resources/scripts/in_chroot.sh" "$script_dir/resources/Files/arch_chroot/root.x86_64/home/"
 cp "$script_dir/resources/scripts/in_chroot2.sh" "$script_dir/resources/Files/arch_chroot/root.x86_64/home/"
 cp "$script_dir/resources/scripts/umount_jail.sh" "$script_dir/resources/Files/arch_chroot/root.x86_64/home/"
