@@ -31,17 +31,6 @@ bash /home/pacman_retrying.sh chntpw \
 	rsync \
 	networkmanager
 
-search='HOOKS=(base udev autodetect microcode modconf kms keyboard keymap consolefont block filesystems fsck)'
-replace='HOOKS="base udev block filesystems"'
-
-search2='MODULES=()'
-replace2='MODULES="crc32 crc32c_generic crc32c crc32-generic"'
-
-sed -i "s|$search|$replace|g" /etc/mkinitcpio.conf
-sed -i "s|$search2|$replace2|g" /etc/mkinitcpio.conf
-
-mkinitcpio -p linux
-
 mkdir -p /mnt/esp/
 mount esp_partition /mnt/esp/
 grub-install --target=x86_64-efi --efi-directory=/mnt/esp/ --bootloader-id=GRUB --removable
@@ -73,15 +62,12 @@ echo "blacklist mousedev" >> /etc/modprobe.d/blacklist.con
 echo "blacklist mac_hid" >> /etc/modprobe.d/blacklist.con
 echo "blacklist uvcvideo" >> /etc/modprobe.d/blacklist.con
 
-search3='MODULES="crc32 crc32c_generic crc32c crc32-generic"'
+search3='MODULES="crc32 crc32c"'
 replace3='MODULES=(zram ext4)'
 
 sed -i "s|$search3|$replace3|g" /etc/mkinitcpio.conf
 
-search4='HOOKS="base udev block filesystems"'
-replace4='HOOKS=(base udev autodetect modconf keyboard block filesystems fsck)'
-
-sed -i "s|$search4|$replace4|g" /etc/mkinitcpio.conf
+mkinitcpio -p linux
 
 sed -i.bak '/\bswap\b/ s/^/#/' /etc/fstab
 
