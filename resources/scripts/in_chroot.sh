@@ -54,6 +54,22 @@ while [ "$error" -eq 1 ]; do
 		error=0
 	fi
 done
+
+echo -e ${YELLOW}
+grep -E '^[[:space:]]*(MODULES|HOOKS)*[[:space:]]*=' /mnt/etc/mkinitcpio.conf
+echo -e ${NC}
+
+bash /home/replace_hooks.sh
+
+search2='MODULES=()'
+replace2='MODULES="crc32 crc32c"'
+
+sed -i "s|$search2|$replace2|g" /mnt/etc/mkinitcpio.conf
+
+echo -e ${YELLOW}
+grep -E '^[[:space:]]*(MODULES|HOOKS)*[[:space:]]*=' /mnt/etc/mkinitcpio.conf
+echo -e ${NC}
+
 if ! genfstab -U mnt/ >> mnt/etc/fstab;
 then
 	echo -e ${RED}"Failed to generate fstab !"${NC}
