@@ -43,22 +43,6 @@ It takes care of:
 
 ---
 
-## Architecture & Flow
-
-```mermaid
-flowchart TD
-    A[Run as root: arch_main.sh] --> B[check_packages.sh<br/>APT install: parted, dosfstools, gnupg, zstd, curl, wget...]
-    B --> C[fdisk_create.sh<br/>Detect USB → confirm → GPT<br/>ESP (FAT) + ROOT (ext4)]
-    C --> D[dowload_and_check.sh<br/>Detect location → choose mirror<br/>Download bootstrap + .sig<br/>Verify GPG]
-    D --> E[extrackt_and_move.sh<br/>Extract bootstrap to arch_chroot/]
-    E --> F[jail_bootstrap.sh<br/>Copy helper scripts, set mirrorlist<br/>Bind mounts → chroot]
-    F --> G[in_chroot.sh (Stage 1)<br/>pacstrap base/linux/firmware<br/>mkinitcpio adjust, fstab gen/verify<br/>prep Stage 2]
-    G --> H[in_chroot2.sh (Stage 2)<br/>locale/keyboard/hostname/root pw<br/>GRUB install (UEFI) + mkinitcpio<br/>optional RAMROOT]
-    H --> I[Cleanup unmounts & exit]
-```
-
----
-
 ## Requirements
 **Host OS**: Debian/Ubuntu (APT available).  
 **Privileges**: run **as root** (the main script exits otherwise).  
