@@ -154,4 +154,8 @@ After completion, your USB should be UEFI-bootable into the installed Arch envir
         └── ramroot_1.1/            # RAMROOT helper (external content)
 ```
 
+# Additional INFO ;)
+If you think I deserve a ☕️, you can send a few 🪙 to Bitcoin address:
+
+1HAK5X4JjnBsJyAaQnpwMMkJRi1MeV7hp3
 ---
