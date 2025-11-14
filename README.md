@@ -29,8 +29,6 @@ It takes care of:
 * installing base packages, configuring locale/keyboard, and
 * installing GRUB for UEFI.
 
-> Versioning: the main launcher shows `Archus-b ver: 1.1`.
-
 ---
 
 ## Features
