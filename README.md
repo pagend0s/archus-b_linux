@@ -8,7 +8,6 @@
 ## Table of contents
 - #overview
 - #features
-- #architecture--flow
 - #requirements
 - #quick-start
 - #what-the-scripts-do
