@@ -16,8 +16,6 @@
 - #repository-structure
 - #notes--caveats-please-read
 - #roadmap--todo
-- #contributing
-- #license
 
 ---
 
