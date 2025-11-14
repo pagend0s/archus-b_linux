@@ -36,7 +36,7 @@ It takes care of:
 - **Safety prompts**: asks before destructive partitioning and highlights the selected device.
 - **Two-stage chroot**:
   - **Stage 1**: `pacstrap` base system, generate and validate `fstab`, prep for stage 2.
-  - **Stage 2**: system config (locale, vconsole, hostname), GRUB install, optional RAMROOT activation.
+  - **Stage 2**: system config (locale, vconsole, hostname), GRUB install, RAMROOT activation.
 - **Clean-up**: unmounts bind mounts and purges temp files after chroot.
 
 ---
@@ -45,7 +45,7 @@ It takes care of:
 **Host OS**: Debian/Ubuntu (APT available).  
 **Privileges**: run **as root** (the main script exits otherwise).  
 **Connectivity**: stable internet (downloads & key retrieval).  
-**Target USB**: ≤ **32 GB** (current scripts enforce a size limit; see #notes--caveats-please-read).  
+**Target USB**: ≤ **32 GB** (current scripts enforce a size limit).  
 **UEFI** firmware (GRUB is installed in UEFI mode with `--removable`).
 
 **Host packages auto-installed** (if missing): `parted`, `dosfstools` (for `mkfs.fat`), `gnupg` (`gpg`), `zstd`, `curl`, `wget`, plus utilities like `fatlabel`, `e2label` (package names may vary on Debian/Ubuntu).
@@ -123,13 +123,12 @@ After completion, your USB should be UEFI-bootable into the installed Arch envir
 
 ## Configuration
 - **Mirror country mapping**: `resources/scripts/countrys.txt` (list of `CC <Country name>`).  
-  *Tip:* The file name has a typo; consider renaming to `countries.txt` and adjusting references.
 - **Packages**:  
   - Stage 2 package list is in `in_chroot2.sh` (installed via `pacman_retrying.sh`).  
   - Stage 1 uses `pacstrap` for `base linux linux-firmware` and adjusts `mkinitcpio`.
 - **GRUB / kernel parameters**: `in_chroot2.sh` rewrites `GRUB_CMDLINE_LINUX_DEFAULT` with aggressive options (e.g., `nowatchdog`, `mitigations=off`). Tune for your needs.
 - **Root password**: hardcoded `qwertz` (change on first boot: `passwd`).
-- **RAMROOT** (optional): expects `/home/ramroot_1.1` tree present; see that directory for details.
+- **RAMROOT**: expects `/home/ramroot_1.1` tree present; see that directory for details.
 
 ---
 
