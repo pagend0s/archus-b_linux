@@ -169,16 +169,3 @@ After completion, your USB should be UEFI-bootable into the installed Arch envir
 - **Paths & typos**: a couple of source paths use a leading `/` before `$script_dir` and some files have typos in their names; see TODO below.
 
 ---
-
-## Roadmap / TODO
-
-- **Portability**: add host-OS detection and support for `pacman` (Arch host) and `dnf`/`yum` (Fedora/RHEL).
-- **ESP filesystem**: switch to **FAT32** for ESP; remove the **≤ 32 GB** pendrive restriction.
-- **Package installation (APT)**: fix package names to the correct providers (`e2fsprogs`, `dosfstools`, etc.); optionally precheck versions.
-- **Robust net check**: replace `ping 8.8.8.8` with `curl -I https://archlinux.org` and timeouts; handle captive portals.
-- **Naming & paths**: rename files (`download_*`, `extract_*`, `countries.txt`) and fix `"/$script_dir/..."` to `"$script_dir/..."` consistently.
-- **Safety**: guard `rm -Rf` with extra checks (ensure `$script_dir` is set, path sanity); add `set -euo pipefail` and `trap` handlers.
-- **CI**: shellcheck + shfmt + bats tests; pre-commit hooks.
-- **Docs**: add screenshots (terminal flow), and a “How it works” section per stage.
-
----
